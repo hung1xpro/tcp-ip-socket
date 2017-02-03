@@ -17,7 +17,7 @@ class Client {
 
     public static void main(String args[]) {
         try {
-            Socket skt = new Socket("localhost", 1234);
+            Socket skt = new Socket("localhost", 11111);
             BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
             System.out.print("Received string: '");
 
