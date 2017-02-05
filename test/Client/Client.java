@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  *
@@ -26,32 +27,57 @@ public class Client {
         BufferedReader br = null;
         BufferedReader is = null;
         PrintWriter os = null;
-
+        Scanner sc = new Scanner(System.in);
         try {
-            sock = new Socket(address, 8888);
+            while (true) {
+                try {
+                    System.out.print("Please Input IP : ");
+                    String ip = sc.next();
+                    int port;
+                    do {
+                        System.out.print("Port: ");
+
+                        while (!sc.hasNextInt()) {
+                            System.out.print("    Port( Please enter number): ");
+                            sc.next();
+                        }
+                        port = sc.nextInt();
+
+                    } while (port <= 0);
+                    sock = new Socket(ip, port);
+                    sc.nextLine();
+                    System.out.println("done");
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Please Input again");
+                }
+
+            }
+            // sock = new Socket("127.0.0.1", 8888);
             br = new BufferedReader(new InputStreamReader(System.in));
             is = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             os = new PrintWriter(sock.getOutputStream());
         } catch (IOException e) {
-          //  e.printStackTrace();
-            System.err.print("IO EXception");
+            //  e.printStackTrace();
+            System.err.print("Please Run Server First");
         }
 
-        System.out.println("Client Address : " + address);
-        System.out.println("Enter message to server (type Close to end):");
-
-        String response = null;
         try {
-            line = br.readLine();
-            while (line.compareTo("Close") != 0) {
-                os.println(line);
-                os.flush();
-                response = is.readLine();
-                System.out.println("Server said : " + response);
+            if (br != null) {
+                String response = null;
+                System.out.println("Client Address : " + address);
+                System.out.print("Enter message to server (type Close to end):");
                 line = br.readLine();
+                while (line.compareTo("Close") != 0) {
+                    os.println(line);
+                    os.flush();
+                    response = is.readLine();
+                    System.out.println("Server said : " + response);
+                    line = br.readLine();
+                }
             }
         } catch (IOException e) {
-           // e.printStackTrace();
+            // e.printStackTrace();
             System.out.println("Socket Error");
         } finally {
             if (is != null) {
@@ -66,6 +92,7 @@ public class Client {
             if (sock != null) {
                 sock.close();
             }
+
             System.out.println("Connection Closed");
 
         }

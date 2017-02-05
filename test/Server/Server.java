@@ -25,19 +25,23 @@ public class Server {
         try {
             connect = new ServerSocket(8888);
         } catch (IOException e) {
-          //  e.printStackTrace();
+            //  e.printStackTrace();
             System.out.println("Server error");
         }
+        int count = 0;
         while (true) {
             try {
                 s = connect.accept();
-                System.out.println("Find connection finish !");
+                System.out.println(s.getLocalSocketAddress());
+                count++;
+                System.out.println("Find connection finish ! Connection to Client " + count);
                 ServerThread threa = new ServerThread(s);
                 threa.start();
 
             } catch (Exception e) {
-              //  e.printStackTrace();
+                //  e.printStackTrace();
                 System.out.println("Connection Error");
+                break;
             }
         }
     }

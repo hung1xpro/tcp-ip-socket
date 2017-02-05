@@ -24,6 +24,7 @@ public class ServerThread extends Thread {
 
     public ServerThread(Socket s) {
         this.sock = s;
+
     }
 
     public void run() {
@@ -40,7 +41,7 @@ public class ServerThread extends Thread {
             while (line.compareTo("Close") != 0) {
                 os.println(line);
                 os.flush();
-                System.out.println("Rep to Client  :  " + line);
+                System.out.println("Rep to Client :  " + line);
                 line = is.readLine();
             }
         } catch (IOException e) {
